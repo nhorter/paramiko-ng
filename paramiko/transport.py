@@ -104,7 +104,7 @@ class Transport(threading.Thread, ClosingContextManager):
     _DECRYPT = object()
 
     _PROTO_ID = '2.0'
-    _CLIENT_ID = 'paramiko_{}'.format(paramiko.__version__)
+    _CLIENT_ID = 'paramiko_ng'
 
     # These tuples of algorithm identifiers are in preference order; do not
     # reorder without reason!
@@ -341,7 +341,9 @@ class Transport(threading.Thread, ClosingContextManager):
 
         # negotiated crypto parameters
         self.packetizer = Packetizer(sock)
-        self.local_version = 'SSH-' + self._PROTO_ID + '-' + self._CLIENT_ID
+        self.local_version = "SSH-%s-%s_%s" % (
+            self._PROTO_ID, self._CLIENT_ID, paramiko.__version__
+        )
         self.remote_version = ''
         self.local_cipher = self.remote_cipher = ''
         self.local_kex_init = self.remote_kex_init = None
