@@ -398,12 +398,12 @@ class Transport(threading.Thread, ClosingContextManager):
         # user-defined event callbacks
         self.completion_event = None
         # how long (seconds) to wait for the SSH banner
-        self.banner_timeout = 15
+        self.banner_timeout = 15.0
         # how long (seconds) to wait for the handshake to finish after SSH
         # banner sent.
-        self.handshake_timeout = 15
+        self.handshake_timeout = 15.0
         # how long (seconds) to wait for the auth response.
-        self.auth_timeout = 30
+        self.auth_timeout = 30.0
         # AuthHandler to save MSG_USERAUTH_BANNER msg here
         self.banner = None
 
