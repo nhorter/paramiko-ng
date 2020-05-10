@@ -324,8 +324,9 @@ class Transport(threading.Thread, ClosingContextManager):
             hostname, port = sock
             self.hostname = hostname
             try:
+                # use default banner_timeout, for lack of better option
                 sock = retry_on_signal(
-                    lambda: socket.create_connection((hostname, port))
+                    lambda: socket.create_connection((hostname, port), timeout=15)
                 )
             except socket.error as e:
                 reason = str(e) or repr(e)
