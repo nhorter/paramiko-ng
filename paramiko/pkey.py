@@ -106,7 +106,11 @@ def load_private_key_file(filename, password=None):
     .. versionadded:: 2.8
     """
     with open(filename, "r") as f:
-        return load_private_key(f.read(), password)
+        try:
+            return load_private_key(f.read(), password)
+        except SSHException as e:
+            e.args = (e.args[0] + (" (file %r)" % filename),)
+            raise
 
 
 def register_pkey_type(cls):
@@ -423,7 +427,11 @@ class PKey(object):
 
     def _from_private_key_file(self, filename, password=None):
         with open(filename, 'r') as file_obj:
-            return self._from_private_key(file_obj, password)
+            try:
+                return self._from_private_key(file_obj, password)
+            except SSHException as e:
+                e.args = (e.args[0] + (" (file %r)" % filename),)
+                raise
 
     def _from_private_key(self, file_obj, password=None):
         pkformat, typ, data = self._read_private_key(file_obj.read(), password)
